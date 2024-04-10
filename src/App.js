@@ -1,30 +1,26 @@
-import { forwardRef, useRef, useImperativeHandle } from 'react'
+// Class API
 
-const Son = forwardRef((props, ref) => {
-  const inputRef = useRef(null)
-  const focusHandler = () => {
-    console.log(inputRef.current)
-    inputRef.current.focus()
+import { Component } from 'react'
+
+class Counter extends Component {
+  state = {
+    count: 0,
   }
-  useImperativeHandle(ref, () => {
-    return {
-      focusHandler,
-    }
-  })
-  return <input type="text" ref={inputRef} />
-})
+  setCount = () => {
+    // 修改状态数据
+    this.setState({
+      count: this.state.count + 1,
+    })
+  }
+  render() {
+    return <button onClick={this.setCount}>{this.state.count}</button>
+  }
+}
 
-// 父组件
 function App() {
-  const sonRef = useRef(null)
-  const showRef = () => {
-    console.log(sonRef.current)
-    sonRef.current.focusHandler()
-  }
   return (
     <>
-      <Son ref={sonRef} />
-      <button onClick={showRef}>focus</button>
+      <Counter></Counter>
     </>
   )
 }
