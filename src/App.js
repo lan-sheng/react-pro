@@ -3,30 +3,33 @@
 import { Component, useState } from 'react'
 
 class Son extends Component {
-  componentDidMount() {
-    console.log('组件渲染完毕了，请求发送起来')
-    this.timer = setInterval(() => {
-      console.log('定时器运行中')
-    }, 1000)
+  render() {
+    return (
+      <div>
+        Son {this.props.msg}
+        <button onClick={() => this.props.onGetSonMsg('我是son组件中的数据')}>dianji</button>
+      </div>
+    )
   }
-
-  componentWillUnmount() {
-    console.log('组件son被卸载了')
-    clearInterval(this.timer)
+}
+class Parent extends Component {
+  state = {
+    msg: 'parent',
+  }
+  getSonMsg = msg => {
+    console.log('msg: ', msg)
   }
   render() {
-    return <div>Son</div>
+    return (
+      <div>
+        Parent <Son msg={this.state.msg} onGetSonMsg={this.getSonMsg} />
+      </div>
+    )
   }
 }
 
 function App() {
-  const [son, setSon] = useState(true)
-  return (
-    <>
-      {son && <Son></Son>}
-      <button onClick={() => setSon(false)}></button>
-    </>
-  )
+  return <>{<Parent></Parent>}</>
 }
 
 export default App
