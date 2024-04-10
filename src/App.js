@@ -1,33 +1,19 @@
-// useMemo
-// 缓存: 消耗非常大的计算
+import { memo, useMemo, useState } from 'react'
 
-import { useMemo, useState } from 'react'
-
-// 计算斐波那契数列之和
-function fib(n) {
-  console.log('计算函数执行了')
-  if (n < 3) return 1
-  return fib(n - 2) + fib(n - 1)
+function Son(params) {
+  console.log('Son重新渲染了')
+  return <div>son</div>
 }
-
+const MemoSon = memo(Son)
 function App() {
-  const [count1, setCount1] = useState(0)
+  const [count, setCount] = useState(0)
 
-  // const result = fib(count1)
-
-  // useMemo写法
-  const result = useMemo(() => {
-    // 返回计算得到的结果
-    return fib(count1)
-  }, [count1])
-
-  const [count2, setCount2] = useState(0)
-  console.log('组件重新渲染')
   return (
     <div className="App">
-      <button onClick={() => setCount1(count1 + 1)}>change count1: {count1}</button>
-      <button onClick={() => setCount2(count2 + 1)}>change count2: {count2}</button>
-      {result}
+      <Son />
+      <MemoSon />
+      <button onClick={() => setCount(count + 1)}>+</button>
+      {count}
     </div>
   )
 }
