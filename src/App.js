@@ -1,26 +1,30 @@
 // Class API
 
-import { Component } from 'react'
+import { Component, useState } from 'react'
 
-class Counter extends Component {
-  state = {
-    count: 0,
+class Son extends Component {
+  componentDidMount() {
+    console.log('组件渲染完毕了，请求发送起来')
+    this.timer = setInterval(() => {
+      console.log('定时器运行中')
+    }, 1000)
   }
-  setCount = () => {
-    // 修改状态数据
-    this.setState({
-      count: this.state.count + 1,
-    })
+
+  componentWillUnmount() {
+    console.log('组件son被卸载了')
+    clearInterval(this.timer)
   }
   render() {
-    return <button onClick={this.setCount}>{this.state.count}</button>
+    return <div>Son</div>
   }
 }
 
 function App() {
+  const [son, setSon] = useState(true)
   return (
     <>
-      <Counter></Counter>
+      {son && <Son></Son>}
+      <button onClick={() => setSon(false)}></button>
     </>
   )
 }
