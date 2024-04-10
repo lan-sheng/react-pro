@@ -1,20 +1,25 @@
-import { forwardRef, useRef } from 'react'
-
-// 子组件
-// function Son () {
-//   return <input type="text" />
-// }
+import { forwardRef, useRef, useImperativeHandle } from 'react'
 
 const Son = forwardRef((props, ref) => {
-  return <input type="text" ref={ref} />
+  const inputRef = useRef(null)
+  const focusHandler = () => {
+    console.log(inputRef.current)
+    inputRef.current.focus()
+  }
+  useImperativeHandle(ref, () => {
+    return {
+      focusHandler,
+    }
+  })
+  return <input type="text" ref={inputRef} />
 })
 
 // 父组件
 function App() {
   const sonRef = useRef(null)
   const showRef = () => {
-    console.log(sonRef)
-    sonRef.current.focus()
+    console.log(sonRef.current)
+    sonRef.current.focusHandler()
   }
   return (
     <>
