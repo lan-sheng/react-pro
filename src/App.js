@@ -1,26 +1,34 @@
-import { useReducer } from 'react'
+// useMemo
+// 缓存: 消耗非常大的计算
 
-function reducer(state, action) {
-  switch (action.type) {
-    case 'INC':
-      return state + 1
-    case 'DEC':
-      return state - 1
-    case 'SET':
-      return action.payload
-    default:
-      return state
-  }
+import { useMemo, useState } from 'react'
+
+// 计算斐波那契数列之和
+function fib(n) {
+  console.log('计算函数执行了')
+  if (n < 3) return 1
+  return fib(n - 2) + fib(n - 1)
 }
+
 function App() {
-  const [state, dispatch] = useReducer(reducer, 0)
+  const [count1, setCount1] = useState(0)
+
+  // const result = fib(count1)
+
+  // useMemo写法
+  const result = useMemo(() => {
+    // 返回计算得到的结果
+    return fib(count1)
+  }, [count1])
+
+  const [count2, setCount2] = useState(0)
+  console.log('组件重新渲染')
   return (
-    <>
-      <button onClick={() => dispatch({ type: 'INC' })}>+</button>
-      {state}
-      <button onClick={() => dispatch({ type: 'DEC' })}>-</button>
-      <button onClick={() => dispatch({ type: 'SET', payload: 100 })}>100</button>
-    </>
+    <div className="App">
+      <button onClick={() => setCount1(count1 + 1)}>change count1: {count1}</button>
+      <button onClick={() => setCount2(count2 + 1)}>change count2: {count2}</button>
+      {result}
+    </div>
   )
 }
 
