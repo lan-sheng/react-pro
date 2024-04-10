@@ -1,25 +1,24 @@
-import { memo, useMemo, useState } from 'react'
+// useCallback
 
-function Son({ count }) {
-  console.log('Son重新渲染了')
-  return <div>son{count}</div>
-}
-const MemoSon = memo(Son)
+import { memo, useCallback, useState } from 'react'
+
+const Input = memo(function Input({ onChange }) {
+  console.log('子组件重新渲染了')
+  return <input type="text" onChange={e => onChange(e.target.value)} />
+})
+
 function App() {
-  console.log('App重新渲染了')
+  console.log('App')
+  // 传给子组件的函数
+  // const changeHandler = value => console.log(value)
+  const changeHandler = useCallback(value => console.log(value), [])
+  // 触发父组件重新渲染的函数
   const [count, setCount] = useState(0)
-  const num = 100
-  const arr = [1, 2, 3]
-  const newArr = useMemo(() => arr, [])
   return (
     <div className="App">
-      {/* <Son /> */}
-      {/* <MemoSon count={count} /> */}
-      {/* <MemoSon count={num} /> */}
-      {/* <MemoSon count={arr} /> */}
-      <MemoSon count={newArr} />
-      <button onClick={() => setCount(count + 1)}>+</button>
-      {count}
+      {/* 把函数作为prop传给子组件 */}
+      <Input onChange={changeHandler} />
+      <button onClick={() => setCount(count + 1)}>{count}</button>
     </div>
   )
 }
