@@ -1,35 +1,17 @@
-// Class API
+import { create } from 'zustand'
 
-import { Component, useState } from 'react'
+const useStore = create(set => {
+  return {
+    count: 0,
+    inc: () => {
+      set(state => ({ count: state.count + 1 }))
+    },
+  }
+})
 
-class Son extends Component {
-  render() {
-    return (
-      <div>
-        Son {this.props.msg}
-        <button onClick={() => this.props.onGetSonMsg('我是son组件中的数据')}>dianji</button>
-      </div>
-    )
-  }
-}
-class Parent extends Component {
-  state = {
-    msg: 'parent',
-  }
-  getSonMsg = msg => {
-    console.log('msg: ', msg)
-  }
-  render() {
-    return (
-      <div>
-        Parent <Son msg={this.state.msg} onGetSonMsg={this.getSonMsg} />
-      </div>
-    )
-  }
-}
-
-function App() {
-  return <>{<Parent></Parent>}</>
+function App () {
+  const {count,inc}=useStore()
+  return <><button onClick={inc}>{ count}</button></>
 }
 
 export default App
